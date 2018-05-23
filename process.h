@@ -1,3 +1,6 @@
+#ifndef process_def
+#define process_def
+
 class process{
 	unsigned int pid;
 	unsigned int cpu_burst;
@@ -13,6 +16,6 @@ class process{
 		priority = 0;
 	}
 
-	
-}
+};
 
+#endif

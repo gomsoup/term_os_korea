@@ -1,5 +1,9 @@
 #include <queue>
 #include "process.h"
+using namespace std;
+
+#ifndef config_def
+#define config_def
 
 class ready_queue{
 	queue <process> q;
@@ -17,12 +21,12 @@ class ready_queue{
 			q.pop();
 		}
 	}
-}
+};
 
 class waiting_queue{
 	queue <process> q;
 	
-	void waiting_queue_push(process p){{
+	void waiting_queue_push(process p){
 		q.push(p);
 	}
 	
@@ -35,5 +39,6 @@ class waiting_queue{
 			q.pop();
 		}
 	}
-}
+};
 
+#endif
