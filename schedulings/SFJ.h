@@ -1,0 +1,3 @@
+class SJF : public schedule {
+
+};

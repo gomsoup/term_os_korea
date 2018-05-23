@@ -1,5 +1,6 @@
 #include <queue>
 #include "process.h"
+
 using namespace std;
 
 #ifndef config_def
@@ -8,15 +9,15 @@ using namespace std;
 class ready_queue{
 	queue <process> q;
 	
-	void ready_queue_push(process p){
+	void QueuePush(process p){
 		q.push(p);
 	}
 
-	void ready_queue_pop(){
+	void QueuePop(){
 		q.pop();
 	}
 
-	void ready_queue_clear(){
+	void QueueClear(){
 		while(!q.empty()){
 			q.pop();
 		}
@@ -26,19 +27,22 @@ class ready_queue{
 class waiting_queue{
 	queue <process> q;
 	
-	void waiting_queue_push(process p){
+	void QueuePush(process p){
 		q.push(p);
 	}
 	
-	void waiting_queue_pop(){
+	void QueuePop(){
 		q.pop();
 	}
 	
-	void waiting_queue_clear(){
+	void QueueClear(){
 		while(!q.empty()){
 			q.pop();
 		}
 	}
 };
+
+void pushProcessReadyQueue(ready_queue r, vector <process> p_list);
+
 
 #endif

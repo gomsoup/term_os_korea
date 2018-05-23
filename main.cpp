@@ -1,13 +1,30 @@
 #include <iostream>
-#include <queue>
 #include <vector>
 #include "process.h"
+#include "config.h"
+#include "schedulings/schedule.h"
+
 using namespace std;
 
-int main(){
 
-	cout << "hello world! " << endl;
+int main(){
+	ready_queue r;
+	waiting_queue w;
+	vector <process> p_list;
+
+	// process create
+	createProcess(p_list, 10);
+	schedule s(p_list);
+	// push ready queue
+	pushProcessReadyQueue(r, p_list);
+	// scheduling
 	
+	// random i/o
+	// scheduling done. get AWT, ATT
+	getAWT(p_list);
+	getATT(p_list);
+	// draw Gantt chart
+
 	return 0;
 }
 
