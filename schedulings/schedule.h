@@ -18,6 +18,8 @@ class schedule {
 		preemptive?
 	*/
 	unsigned int tick = 0;
+	process current_job;
+	process next_job;
 	vector <process> p_list;
 
 public:
