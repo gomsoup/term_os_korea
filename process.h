@@ -1,4 +1,5 @@
 #include <vector>
+#include <cstdlib>
 using namespace std;
 
 #ifndef process_def
@@ -18,10 +19,10 @@ public:
 
 	process(){
 		pid = pid_cnt + 1; pid_cnt++;
-		cpu_burst = 0;
-		io_burst = 0;
-		arrive = 0;
-		priority = 0;
+		cpu_burst = rand()%10;
+		io_burst = rand()%10;
+		arrive = rand()%10;
+		priority = rand()%10;
 		waiting_time = 0;
 		done_time = 0;
 	}
@@ -40,7 +41,7 @@ public:
 	}
 };
 
-void createProcess(vector <process> p, int amount);
+void createProcess(vector <process> &p, int amount);
 void getAWT(vector <process> p);
 void getATT(vector <process> p);
 

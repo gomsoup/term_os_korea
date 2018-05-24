@@ -14,10 +14,10 @@ int main(){
 
 	// process create
 	createProcess(p_list, 10);
-	schedule s(p_list);
 	// push ready queue
 	pushProcessReadyQueue(r, p_list);
-	// scheduling
+	// scheduler create
+	schedule s(p_list);
 	
 	// random i/o
 	// scheduling done. get AWT, ATT
