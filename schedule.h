@@ -33,13 +33,13 @@ class schedule {
 	void RRStart();
 	void nonPreemptivePriorityStart();
 	void preemptivePriorityStart();
-	void FCFSStart(ready_queue &r, unsigned int tick);
+	void FCFSStart(ready_queue &r, unsigned int &tick);
 	void nonPreemptiveSJFStart();
 	void preemptiveSJFStart();
 
 
 public:
-	void scheduleStart(ready_queue &r,unsigned int tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 
+	void scheduleStart(ready_queue &r,unsigned int &tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 
 	void drawGanttChart();
 	bool isDone(ready_queue r) {
 		return r.isEmpty();

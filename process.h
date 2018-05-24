@@ -1,12 +1,12 @@
 #include <vector>
 #include <cstdlib>
+#include <ctime>
 using namespace std;
 
 #ifndef process_def
 #define process_def
 
 static unsigned int pid_cnt = 0;
-
 class process{
 public:
 	unsigned int pid;
@@ -19,9 +19,9 @@ public:
 
 	process(){
 		pid = pid_cnt + 1; pid_cnt++;
-		cpu_burst = rand()%5 + 1;
+		cpu_burst = rand()%2 + 1;
 		bursted = 0;
-		arrive = rand()%5 + 1;
+		arrive = rand()%10;
 		priority = rand()%5 + 1;
 		waiting_time = 0;
 		done_time = 0;

@@ -29,6 +29,7 @@ void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
 int main(){
 	ready_queue r;
 	vector <process> p_list;
+	srand(time(NULL));
 
 	// process create
 	createProcess(p_list, 5);
