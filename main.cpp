@@ -8,15 +8,15 @@ using namespace std;
 
 int main(){
 	ready_queue r;
-	waiting_queue w;
 	vector <process> p_list;
 
 	// process create
-	createProcess(p_list, 10);
+	createProcess(p_list, 5);
 	// push ready queue
 	pushProcessReadyQueue(r, p_list);
 	// scheduler create 
 	schedule s(p_list);
+	s.scheduleStart(r);
 	// scheduling start
 	// random i/o
 	// scheduling done. get AWT, ATT

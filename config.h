@@ -8,11 +8,12 @@ using namespace std;
 
 class ready_queue{
 public:
-
 	queue <process> q;
+	process last;
 
 	void QueuePush(process p){
 		q.push(p);
+		last = q.front();
 	}
 
 	void QueuePop(){
@@ -24,23 +25,9 @@ public:
 			q.pop();
 		}
 	}
-};
 
-class waiting_queue{
-	queue <process> q;
-	
-	void QueuePush(process p){
-		q.push(p);
-	}
-	
-	void QueuePop(){
-		q.pop();
-	}
-	
-	void QueueClear(){
-		while(!q.empty()){
-			q.pop();
-		}
+	bool isEmpty(){
+		return q.empty();
 	}
 };
 

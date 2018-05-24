@@ -1,7 +1,7 @@
 #include "schedule.h"
 
-void schedule::scheduleStart(ready_queue &r, waiting_queue &q){
-	FCFSStart();
+void schedule::scheduleStart(ready_queue r){
+	FCFSStart(r);
 	RRStart();
 	nonPreemptivePriorityStart();
 	preemptivePriorityStart();
@@ -9,26 +9,43 @@ void schedule::scheduleStart(ready_queue &r, waiting_queue &q){
 	preemptiveSJFStart();
 }
 
-void nonPreemptiveSJFStart() {
+void schedule::nonPreemptiveSJFStart() {
 
 }
 
-void preemptiveSJFStart() {
+void schedule::preemptiveSJFStart() {
 
 }
 
-void nonPreemptivePriorityStart() {
+void schedule::nonPreemptivePriorityStart() {
 
 }
 
-void preemptivePriorityStart() {
+void schedule::preemptivePriorityStart() {
 
 }
 
-void FCFSStart() {
+void schedule::FCFSStart(ready_queue r) {
 
+	while (!r.isEmpty()) {
+		current_job = &r.q.front();
+		r.QueuePop();
+
+
+		for (int i = 0; i < current_job->cpu_burst; i++) {
+			tick++;
+			current_job->waiting_time++;
+		}
+
+		current_job->done_time = tick;
+
+		job *temp = new job();
+		temp->pid = current_job->pid;
+		temp->time = tick;
+		progress.push_back(temp);
+	}
 }
 
-void RRStart() {
+void schedule::RRStart() {
 
 }
