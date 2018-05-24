@@ -25,6 +25,19 @@ public:
 		waiting_time = 0;
 		done_time = 0;
 	}
+
+	process(const process& p) {
+		pid = p.pid;
+		cpu_burst = p.cpu_burst;
+		io_burst = p.io_burst;
+		arrive = p.arrive;
+		priority = p.priority;
+		waiting_time = p.waiting_time;
+		done_time = p.done_time;
+	}
+	~process() {
+
+	}
 };
 
 void createProcess(vector <process> p, int amount);
