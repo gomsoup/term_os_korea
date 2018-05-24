@@ -11,7 +11,7 @@ public:
 	queue <process> q;
 	process last;
 
-	void QueuePush(process p){
+	void QueuePush(process &p){
 		q.push(p);
 		last = q.front();
 	}
@@ -33,6 +33,9 @@ public:
 	bool isEmpty(){
 		return q.empty();
 	}
+
+	void addWaitingTime(process *except);
+
 };
 
 void pushProcessReadyQueue(ready_queue &r, vector <process> p_list);

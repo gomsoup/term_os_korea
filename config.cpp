@@ -8,3 +8,15 @@ void pushProcessReadyQueue(ready_queue &r, vector <process> p_list) {
 	}
 }
 
+void ready_queue::addWaitingTime(process *except) {
+	queue <process> temp = q;
+	QueueClear();
+
+	while (!temp.empty()) {
+		process p = temp.front(); 
+		if(p.pid != except->pid)
+			p.waiting_time++;
+		temp.pop();
+		q.push(p);
+	}
+}

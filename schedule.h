@@ -17,18 +17,11 @@ typedef struct {
 }job;
 
 class schedule {
-	/*
-		how to make random i/o?
-		shoud consider about preemptive.
-		inheritence? 
-		how can we manage scheduling queue?
-		burst counter?
-		preemptive?
-	*/
 	process *current_job = nullptr;
 	process *next_job = nullptr;
-	vector <process> p_list;
+	queue <process> done_process; //for get AWT, ATT
 	list <job*> progress;
+	bool start_flag = false;
 
 	void RRStart();
 	void nonPreemptivePriorityStart();
@@ -37,13 +30,14 @@ class schedule {
 	void nonPreemptiveSJFStart();
 	void preemptiveSJFStart();
 
-
 public:
 	void scheduleStart(ready_queue &r,unsigned int &tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 
 	void drawGanttChart();
 	bool isDone(ready_queue r) {
 		return r.isEmpty();
 	}
+	void getATT();
+	void getAWT();
 };
 
 class longterm_schedule {

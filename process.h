@@ -21,7 +21,7 @@ public:
 		pid = pid_cnt + 1; pid_cnt++;
 		cpu_burst = rand()%2 + 1;
 		bursted = 0;
-		arrive = rand()%10;
+		arrive = rand()%5;
 		priority = rand()%5 + 1;
 		waiting_time = 0;
 		done_time = 0;
@@ -34,6 +34,7 @@ public:
 		priority = p.priority;
 		waiting_time = p.waiting_time;
 		done_time = p.done_time;
+		bursted = p.bursted;
 	}
 	~process() {
 
@@ -46,7 +47,6 @@ public:
 };
 
 void createProcess(vector <process> &p, int amount);
-void getAWT(vector <process> p);
-void getATT(vector <process> p);
+void deleteProcess(vector <process> &p);
 
 #endif

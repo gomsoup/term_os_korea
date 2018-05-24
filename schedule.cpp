@@ -2,9 +2,13 @@
 #include <string>
 
 void schedule::scheduleStart(ready_queue &r, unsigned int &tick, int algorithm){
-	if (algorithm == 0) // FCFS
+	if (algorithm == 0) { // FCFS
+		if (!start_flag) {
+			start_flag = true;
+			cout << "FCFS Start!!" << endl;
+		}
 		FCFSStart(r, tick);
-
+	}
 }
 
 void schedule::nonPreemptiveSJFStart() {
@@ -28,8 +32,9 @@ void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
 		if (r.isEmpty()) {
 			return;
 		}
-		else
-			current_job = &r.q.front();
+		else {
+			current_job = &r.getFirstMember();
+		}
 	}
 
 	
@@ -43,7 +48,10 @@ void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
 		r.QueuePop();
 		current_job->done_time = tick;
 		progress.back()->time = tick;
-		progress.back()->done_time = tick;
+		progress.back()->done_time = tick; 
+		done_process.push(*current_job);
+
+
 		current_job = nullptr;
 		tick--;
 		return;
@@ -51,13 +59,46 @@ void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
 	else{
 		progress.back()->time=tick;
 	}
-
+	
+	r.addWaitingTime(current_job);
 	current_job->bursted++;
 }
 
 void schedule::RRStart() {
 
 }
+
+void schedule::getAWT() {
+	queue <process> temp = done_process;
+	int wt = 0; int cnt = 0;
+	process p;
+	while (!temp.empty()) {
+		p = temp.front();
+		wt += p.waiting_time;
+		
+		temp.pop();
+		cnt++;
+	}
+
+	cout << "AWT : " << (double)wt / cnt << endl;
+}
+
+void schedule::getATT() {
+	queue <process> temp = done_process;
+	int tt = 0; int cnt = 0;
+	process p;
+
+	while (!temp.empty()) {
+		p = temp.front();
+		tt = tt + p.done_time - p.arrive;
+
+		temp.pop();
+		cnt++;
+	}
+
+	cout << "ATT : " << (double)tt / cnt << endl;
+}
+
 
 void schedule::drawGanttChart() {
 	list <job *> temp = progress;
@@ -73,9 +114,10 @@ void schedule::drawGanttChart() {
 	while (!temp.empty()) { // draw graph start
 		job *p = temp.front();
 
-		while (cnt > p->start_time) {
+		while (cnt < p->start_time) {
 			a += " ";
 			b += " ";
+			cnt++;
 		}
 
 		if (last_time != p->start_time) {
@@ -85,7 +127,7 @@ void schedule::drawGanttChart() {
 		for (int i = 0; i < p->done_time; i++) {
 			if (i == p->done_time / 2) {
 				a += to_string(p->pid) + " ";
-				b += "  ";
+				b += " ";
 			}
 			else {
 				a += " ";
@@ -95,6 +137,9 @@ void schedule::drawGanttChart() {
 
 
 		a += "| ";
+		if (p->done_time > 9)
+			a += " ";
+
 		b += to_string(p->done_time);
 		if (p->done_time < 9)
 			b += " ";
@@ -104,28 +149,6 @@ void schedule::drawGanttChart() {
 	}
 	cout << a << endl;
 	cout << b << endl;
-
-	/*
-	temp = progress; // draw time start
-
-	cout << "0";
-	while (!temp.empty()) {
-		job *p = temp.front();
-		while (cnt < p->done_time) {
-			if (cnt == p->start_time && last_time != p->start_time)
-				cout << p->start_time << "  ";
-			else
-				cout << "  ";
-
-			cnt++;
-		}
-		cout << p->done_time << "  ";
-		last_time = p->done_time;
-		temp.pop_front();
-		cnt++;
-	}
-	cout << endl;
-	*/
 }
 
 // long term scheduler

@@ -6,11 +6,3 @@ void createProcess(vector <process> &p, int amount) {
 		p.push_back(*proc);
 	}
 }
-
-void getAWT(vector <process> p) { // get average waiting time
-
-}
-
-void getATT(vector <process> p) { // get average turnaround time
-
-}
