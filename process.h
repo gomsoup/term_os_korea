@@ -28,7 +28,6 @@ public:
 	process(const process& p) {
 		pid = p.pid;
 		cpu_burst = p.cpu_burst;
-		io_burst = p.io_burst;
 		arrive = p.arrive;
 		priority = p.priority;
 		waiting_time = p.waiting_time;
@@ -37,6 +36,11 @@ public:
 	~process() {
 
 	}
+
+	bool operator> (const process& l) const {
+		return arrive > l.arrive;
+	}
+
 };
 
 void createProcess(vector <process> &p, int amount);

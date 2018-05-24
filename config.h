@@ -26,6 +26,7 @@ public:
 		}
 	}
 
+
 	bool isEmpty(){
 		return q.empty();
 	}

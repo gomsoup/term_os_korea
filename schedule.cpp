@@ -1,12 +1,13 @@
 #include "schedule.h"
 
-void schedule::scheduleStart(ready_queue r){
-	FCFSStart(r);
+void schedule::scheduleStart(ready_queue r, unsigned int tick){
+/*	FCFSStart(r, tick);
 	RRStart();
 	nonPreemptivePriorityStart();
 	preemptivePriorityStart();
 	nonPreemptiveSJFStart();
 	preemptiveSJFStart();
+*/
 }
 
 void schedule::nonPreemptiveSJFStart() {
@@ -25,8 +26,7 @@ void schedule::preemptivePriorityStart() {
 
 }
 
-void schedule::FCFSStart(ready_queue r) {
-
+void schedule::FCFSStart(ready_queue r, unsigned int tick) {
 	while (!r.isEmpty()) {
 		current_job = &r.q.front();
 		r.QueuePop();
@@ -36,7 +36,6 @@ void schedule::FCFSStart(ready_queue r) {
 			tick++;
 			current_job->waiting_time++;
 		}
-
 		current_job->done_time = tick;
 
 		job *temp = new job();
@@ -44,8 +43,23 @@ void schedule::FCFSStart(ready_queue r) {
 		temp->time = tick;
 		progress.push_back(temp);
 	}
+
 }
 
 void schedule::RRStart() {
+
+}
+
+
+// long term scheduler
+
+void longterm_schedule::pushReadyQueue(ready_queue r) {
+	
+
+}
+
+
+
+void drawGattChart() {
 
 }

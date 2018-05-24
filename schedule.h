@@ -1,6 +1,7 @@
 #include <queue>
 #include <vector>
 #include <list>
+#include <iostream>
 #include "process.h"
 #include "config.h"
 using namespace std;
@@ -22,7 +23,6 @@ class schedule {
 		burst counter?
 		preemptive?
 	*/
-	unsigned int tick = 0;
 	process *current_job;
 	process *next_job;
 	vector <process> p_list;
@@ -31,16 +31,47 @@ class schedule {
 	void RRStart();
 	void nonPreemptivePriorityStart();
 	void preemptivePriorityStart();
-	void FCFSStart(ready_queue r);
+	void FCFSStart(ready_queue r, unsigned int tick);
 	void nonPreemptiveSJFStart();
 	void preemptiveSJFStart();
 
+
+
 public:
-	schedule(vector <process> p_list) {
-		this->p_list = p_list; // p_list may not disappear while program is running. shallow copy will be fine.
-	}
-	void scheduleStart(ready_queue r); // call-by-value. we don't need reference every scheduling algorithm. 
+	void scheduleStart(ready_queue r,unsigned int tick); // call-by-value. we don't need reference every scheduling algorithm. 
 };
+
+class longterm_schedule {
+	process *p;
+	priority_queue<process, vector<process>, greater<process>> q;
+
+public:
+
+	longterm_schedule(vector <process> p_list) {
+		vector <process>::iterator iter;
+
+		for (iter = p_list.begin(); iter != p_list.end(); iter++) {
+			q.push(*iter);
+		}
+
+	}
+
+	void printQueue() {
+		priority_queue<process, vector<process>, greater<process>> temp = q;
+		process p;
+		while (!q.empty()) {
+			p = q.top();
+			cout << p.arrive << endl;
+			q.pop();
+		}
+
+	}
+
+
+	void pushReadyQueue(ready_queue r);
+};
+
+
 
 
 #endif

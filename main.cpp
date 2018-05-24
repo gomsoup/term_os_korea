@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <thread>
 #include "process.h"
 #include "config.h"
 #include "schedule.h"
@@ -13,10 +14,15 @@ int main(){
 	// process create
 	createProcess(p_list, 5);
 	// push ready queue
-	pushProcessReadyQueue(r, p_list);
-	// scheduler create 
-	schedule s(p_list);
-	s.scheduleStart(r);
+//	pushProcessReadyQueue(r, p_list);
+	// scheduler create
+	longterm_schedule ls(p_list);
+	schedule s();
+
+	ls.printQueue();
+
+
+	//s.scheduleStart(r);
 	// scheduling start
 	// random i/o
 	// scheduling done. get AWT, ATT
