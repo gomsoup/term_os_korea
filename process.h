@@ -6,7 +6,8 @@ using namespace std;
 #ifndef process_def
 #define process_def
 
-static unsigned int pid_cnt = 0;
+static int pid_count = -1; // constructor 
+
 class process{
 public:
 	unsigned int pid;
@@ -18,7 +19,7 @@ public:
 	unsigned int bursted;
 
 	process(){
-		pid = pid_cnt + 1; pid_cnt++;
+		pid = pid_count++;
 		cpu_burst = rand()%2 + 1;
 		bursted = 0;
 		arrive = rand()%5;
@@ -35,6 +36,7 @@ public:
 		waiting_time = p.waiting_time;
 		done_time = p.done_time;
 		bursted = p.bursted;
+		pid_count--;
 	}
 	~process() {
 
@@ -47,6 +49,6 @@ public:
 };
 
 void createProcess(vector <process> &p, int amount);
-void deleteProcess(vector <process> &p);
+void printProcess(vector <process> p_list);
 
 #endif

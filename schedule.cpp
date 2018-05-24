@@ -165,9 +165,3 @@ void longterm_schedule::pushReadyQueue(ready_queue &r, unsigned int tick) {
 	}
 
 }
-
-
-
-void drawGattChart() {
-
-}
