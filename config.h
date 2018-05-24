@@ -26,6 +26,9 @@ public:
 		}
 	}
 
+	process &getFirstMember() {
+		return q.front();
+	}
 
 	bool isEmpty(){
 		return q.empty();

@@ -11,7 +11,9 @@ using namespace std;
 
 typedef struct {
 	unsigned int pid;
+	unsigned int start_time;
 	unsigned int time;
+	unsigned int done_time;
 }job;
 
 class schedule {
@@ -23,22 +25,25 @@ class schedule {
 		burst counter?
 		preemptive?
 	*/
-	process *current_job;
-	process *next_job;
+	process *current_job = nullptr;
+	process *next_job = nullptr;
 	vector <process> p_list;
 	list <job*> progress;
 
 	void RRStart();
 	void nonPreemptivePriorityStart();
 	void preemptivePriorityStart();
-	void FCFSStart(ready_queue r, unsigned int tick);
+	void FCFSStart(ready_queue &r, unsigned int tick);
 	void nonPreemptiveSJFStart();
 	void preemptiveSJFStart();
 
 
-
 public:
-	void scheduleStart(ready_queue r,unsigned int tick); // call-by-value. we don't need reference every scheduling algorithm. 
+	void scheduleStart(ready_queue &r,unsigned int tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 
+	void drawGanttChart();
+	bool isDone(ready_queue r) {
+		return r.isEmpty();
+	}
 };
 
 class longterm_schedule {
@@ -56,19 +61,12 @@ public:
 
 	}
 
-	void printQueue() {
-		priority_queue<process, vector<process>, greater<process>> temp = q;
-		process p;
-		while (!q.empty()) {
-			p = q.top();
-			cout << p.arrive << endl;
-			q.pop();
-		}
-
+	bool isDone() {
+		return q.empty();
 	}
 
 
-	void pushReadyQueue(ready_queue r);
+	void pushReadyQueue(ready_queue &r, unsigned int tick);
 };
 
 

@@ -7,6 +7,25 @@
 
 using namespace std;
 
+
+void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
+	for (int i = 0; i < 6; i++) {
+		longterm_schedule temp = ls;
+		schedule stemp = s;
+		ready_queue rtemp = r;
+		unsigned int tick = 0;
+
+		while ( !(temp.isDone() && stemp.isDone(rtemp)) ) {
+			temp.pushReadyQueue(rtemp, tick);
+			stemp.scheduleStart(rtemp, tick, i);
+			tick++;
+		}
+
+		stemp.drawGanttChart();
+	}
+}
+
+
 int main(){
 	ready_queue r;
 	vector <process> p_list;
@@ -17,11 +36,9 @@ int main(){
 //	pushProcessReadyQueue(r, p_list);
 	// scheduler create
 	longterm_schedule ls(p_list);
-	schedule s();
+	schedule s;
 
-	ls.printQueue();
-
-
+	scheduleStart(ls, s, r);
 	//s.scheduleStart(r);
 	// scheduling start
 	// random i/o

@@ -15,10 +15,12 @@ public:
 	unsigned int priority;
 	unsigned int waiting_time;
 	unsigned int done_time;
+	unsigned int bursted;
 
 	process(){
 		pid = pid_cnt + 1; pid_cnt++;
 		cpu_burst = rand()%5 + 1;
+		bursted = 0;
 		arrive = rand()%5 + 1;
 		priority = rand()%5 + 1;
 		waiting_time = 0;
