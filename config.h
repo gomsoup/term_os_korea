@@ -7,8 +7,10 @@ using namespace std;
 #define config_def
 
 class ready_queue{
+public:
+
 	queue <process> q;
-	
+
 	void QueuePush(process p){
 		q.push(p);
 	}
@@ -42,7 +44,7 @@ class waiting_queue{
 	}
 };
 
-void pushProcessReadyQueue(ready_queue r, vector <process> p_list);
+void pushProcessReadyQueue(ready_queue &r, vector <process> p_list);
 
 
 #endif
