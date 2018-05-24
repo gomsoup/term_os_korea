@@ -1,3 +1,10 @@
-class SJF : public schedule {
+#include "schedule.h"
 
-};
+void nonPreemptiveSJFStart() {
+
+}
+
+
+void preemptiveSJFStart() {
+
+}

@@ -20,7 +20,6 @@ public:
 	process(){
 		pid = pid_cnt + 1; pid_cnt++;
 		cpu_burst = rand()%10;
-		io_burst = rand()%10;
 		arrive = rand()%10;
 		priority = rand()%10;
 		waiting_time = 0;
