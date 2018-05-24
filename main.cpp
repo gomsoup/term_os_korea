@@ -2,10 +2,9 @@
 #include <vector>
 #include "process.h"
 #include "config.h"
-#include "schedulings/schedule.h"
+#include "schedule.h"
 
 using namespace std;
-
 
 int main(){
 	ready_queue r;

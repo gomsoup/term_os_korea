@@ -9,7 +9,6 @@ void schedule::scheduleStart(ready_queue &r, waiting_queue &q){
 	preemptiveSJFStart();
 }
 
-
 void nonPreemptiveSJFStart() {
 
 }
