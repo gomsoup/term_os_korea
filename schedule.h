@@ -33,7 +33,7 @@ class schedule {
 	void preemptiveSJFStart(ready_queue &r, unsigned int &tick);
 
 public:
-	void scheduleStart(ready_queue &r,unsigned int &tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 
+	void scheduleStart(ready_queue &r,unsigned int &tick, int algorithm); 
 	void drawGanttChart();
 	bool isDone(ready_queue r) {
 		return r.isEmpty();
@@ -46,7 +46,6 @@ public:
 class longterm_schedule {
 	process *p;
 	queue <process*> q;
-	//priority_queue<process*, vector<process*>, greater<process*>> q;
 	priority_queue<process, vector<process>, less<process>> priority_q;
 
 public:
@@ -56,7 +55,6 @@ public:
 
 		for (iter = p_list.begin(); iter != p_list.end(); iter++) {
 			q.push((*iter));
-	//		priority_q.push(*iter);
 		}
 
 	}

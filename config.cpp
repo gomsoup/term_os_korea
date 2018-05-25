@@ -28,7 +28,6 @@ void ready_queue::deleteProcess(process *proc) {
 
 process &ready_queue::returnPriorityProcess() {
 	process *p=nullptr;
-	queue <process*> temp = q;
 	queue <process*> temp2;
 
 	if (q.empty()) return *p;
@@ -51,7 +50,6 @@ process &ready_queue::returnPriorityProcess() {
 }
 process &ready_queue::returnSJFProcess() {
 	process *p = nullptr;
-	queue <process*> temp = q;
 	queue <process*> temp2;
 
 	if (q.empty()) return *p;
