@@ -22,8 +22,10 @@ class schedule {
 	queue <process> done_process; //for get AWT, ATT
 	list <job*> progress;
 	bool start_flag = false;
+	int quantum = 3;
 
-	void RRStart();
+
+	void RRStart(ready_queue &r, unsigned int &tick);
 	void nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick);
 	void preemptivePriorityStart(ready_queue &r, unsigned int &tick);
 	void FCFSStart(ready_queue &r, unsigned int &tick);
@@ -58,10 +60,8 @@ public:
 
 	}
 
-	bool isDone(int algorithm) {
-		if (algorithm <= 2) {
-			return q.empty();
-		}
+	bool isDone() {
+		return q.empty();
 	}
 
 	void pushReadyQueue(ready_queue &r, unsigned int tick, int algorithm);

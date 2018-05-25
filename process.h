@@ -17,15 +17,17 @@ public:
 	unsigned int waiting_time;
 	unsigned int done_time;
 	unsigned int bursted;
+	unsigned int quantum;
 
 	process(){
 		pid = pid_count++;
-		cpu_burst = rand()%4 + 1;
+		cpu_burst = rand()%7 + 1;
 		bursted = 0;
 		arrive = rand()%3;
 		priority = rand()%5 + 1;
 		waiting_time = 0;
 		done_time = 0;
+		quantum = 0;
 	}
 
 	process(const process& p) {

@@ -9,19 +9,26 @@ void schedule::scheduleStart(ready_queue &r, unsigned int &tick, int algorithm){
 		}
 		FCFSStart(r, tick);
 	}
-	else if (algorithm == 1) {
+	else if (algorithm == 1) { //non preemptive priority
 		if (!start_flag) {
 			start_flag = true;
 			cout << "non preemptive priority Start!!" << endl;
 		}
 		nonPreemptivePriorityStart(r, tick);
 	}
-	else if (algorithm == 2) {
+	else if (algorithm == 2) { // preemptive priority
 		if (!start_flag) {
 			start_flag = true;
 			cout << "preemptive priority Start!!" << endl;
 		}
 		preemptivePriorityStart(r, tick);
+	}
+	else if (algorithm == 3) { // RR
+		if (!start_flag) {
+			start_flag = true;
+			cout << "RR Start!!" << endl;
+		}
+		RRStart(r, tick);
 	}
 }
 
@@ -148,8 +155,48 @@ void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
 	current_job->bursted++;
 }
 
-void schedule::RRStart() {
+void schedule::RRStart(ready_queue &r, unsigned int &tick) {
+	if (r.isEmpty())
+		return;
 
+	if (current_job != nullptr && current_job->quantum >= quantum && current_job->cpu_burst != current_job->bursted) {
+		progress.back()->done_time = tick;
+		r.deleteProcess(current_job);
+		r.QueuePush(current_job);
+
+		current_job = &r.returnRRProcess();
+	}
+	else if (current_job == nullptr)
+		current_job = &r.returnRRProcess();
+	
+	if (current_job == nullptr)
+		return;
+
+	if (progress.empty() || progress.back()->pid != current_job->pid) {
+		job *temp = new job();
+		temp->pid = current_job->pid;
+		temp->start_time = tick;
+		progress.push_back(temp);
+	}
+	else if (current_job->bursted == current_job->cpu_burst) {
+		r.deleteProcess(current_job);
+		current_job->done_time = tick;
+		progress.back()->time = tick;
+		progress.back()->done_time = tick;
+		done_process.push(*current_job);
+
+
+		current_job = nullptr;
+		tick--;
+		return;
+	}
+	else {
+		progress.back()->time = tick;
+	}
+
+	r.addWaitingTime(current_job);
+	current_job->bursted++;
+	current_job->quantum++;
 }
 
 void schedule::getAWT() {

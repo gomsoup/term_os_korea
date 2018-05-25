@@ -50,12 +50,43 @@ process &ready_queue::returnPriorityProcess() {
 	return *p;
 }
 
-void pushProcessReadyQueue(ready_queue &r, vector <process> p_list) {
-	vector <process>::iterator iter;
+process &ready_queue::returnRRProcess() {
+	process *p = nullptr;
+	if (q.empty()) return *p;
 
-	for (iter = p_list.begin(); iter != p_list.end(); iter++) {
-		r.QueuePush(&(*iter));
+	queue <process*> temp2;	
+
+	p = q.front();
+	while (true) {
+		temp2.push(q.front());
+		q.pop();
+		if (q.empty())
+			break;
+
+		if (p->quantum > q.front()->quantum)
+			p = q.front();
 	}
+
+	q = temp2;
+	return *p;
+
+}
+
+void ready_queue::quantumZero() {
+	process *p = nullptr;
+	if (q.empty()) return;
+
+	queue <process *> temp;
+
+	while (!q.empty()) {
+		p = q.front();
+		q.pop();
+
+		p->quantum = 0;
+		temp.push(p);
+	}
+
+	q = temp;
 }
 
 void ready_queue::popPriorityProcess(process p) {
@@ -71,4 +102,12 @@ void ready_queue::popPriorityProcess(process p) {
 		}
 	}
 	q = temp;
+}
+
+void pushProcessReadyQueue(ready_queue &r, vector <process> p_list) {
+	vector <process>::iterator iter;
+
+	for (iter = p_list.begin(); iter != p_list.end(); iter++) {
+		r.QueuePush(&(*iter));
+	}
 }
