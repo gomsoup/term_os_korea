@@ -40,7 +40,6 @@ public:
 	}
 	void getATT();
 	void getAWT();
-	void test();
 };
 
 class longterm_schedule {
