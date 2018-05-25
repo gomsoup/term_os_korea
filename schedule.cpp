@@ -42,7 +42,7 @@ void schedule::scheduleStart(ready_queue &r, unsigned int &tick, int algorithm){
 			start_flag = true;
 			cout << "preemptive SJF Start!!" << endl;
 		}
-		nonPreemptiveSJFStart(r, tick);
+		preemptiveSJFStart(r, tick);
 	}
 }
 

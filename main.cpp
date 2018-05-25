@@ -19,7 +19,7 @@ void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
 			tick++;
 		}
 
-		stemp.test();
+		stemp.drawGanttChart();
 		stemp.getAWT();
 		stemp.getATT();
 		cout << endl;
