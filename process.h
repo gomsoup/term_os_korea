@@ -20,9 +20,9 @@ public:
 
 	process(){
 		pid = pid_count++;
-		cpu_burst = rand()%2 + 1;
+		cpu_burst = rand()%4 + 1;
 		bursted = 0;
-		arrive = rand()%5;
+		arrive = rand()%3;
 		priority = rand()%5 + 1;
 		waiting_time = 0;
 		done_time = 0;
@@ -62,7 +62,7 @@ public:
 
 };
 
-void createProcess(vector <process> &p, int amount);
-void printProcess(vector <process> p_list);
+void createProcess(vector <process*> &p, int amount);
+void printProcess(vector <process *> &p_list);
 
 #endif

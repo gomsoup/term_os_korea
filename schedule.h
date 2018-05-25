@@ -18,18 +18,17 @@ typedef struct {
 
 class schedule {
 	process *current_job = nullptr;
-	process *next_job = nullptr;
+	process *last_job = nullptr;
 	queue <process> done_process; //for get AWT, ATT
 	list <job*> progress;
 	bool start_flag = false;
 
 	void RRStart();
 	void nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick);
-	void preemptivePriorityStart();
+	void preemptivePriorityStart(ready_queue &r, unsigned int &tick);
 	void FCFSStart(ready_queue &r, unsigned int &tick);
 	void nonPreemptiveSJFStart();
 	void preemptiveSJFStart();
-	void orderByPriority(ready_queue r);
 
 public:
 	void scheduleStart(ready_queue &r,unsigned int &tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 
@@ -43,28 +42,30 @@ public:
 
 class longterm_schedule {
 	process *p;
-	priority_queue<process, vector<process>, greater<process>> FIFO_q;
+	queue <process*> q;
+	//priority_queue<process*, vector<process*>, greater<process*>> q;
 	priority_queue<process, vector<process>, less<process>> priority_q;
 
 public:
 
-	longterm_schedule(vector <process> p_list) {
-		vector <process>::iterator iter;
+	longterm_schedule(vector <process*> p_list) {
+		vector <process*>::iterator iter;
 
 		for (iter = p_list.begin(); iter != p_list.end(); iter++) {
-			FIFO_q.push(*iter);
-			priority_q.push(*iter);
+			q.push((*iter));
+	//		priority_q.push(*iter);
 		}
 
 	}
 
 	bool isDone(int algorithm) {
-		if (algorithm <= 1) {
-			return FIFO_q.empty();
+		if (algorithm <= 2) {
+			return q.empty();
 		}
 	}
 
 	void pushReadyQueue(ready_queue &r, unsigned int tick, int algorithm);
+	void cleanQueue();
 };
 
 

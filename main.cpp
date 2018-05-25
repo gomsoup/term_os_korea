@@ -8,7 +8,7 @@
 using namespace std;
 
 void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 3; i++) {
 		longterm_schedule temp = ls;
 		schedule stemp = s;
 		unsigned int tick = 0;
@@ -23,13 +23,15 @@ void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
 		stemp.getAWT();
 		stemp.getATT();
 		cout << endl;
+
+		ls.cleanQueue();
 	}
 }
 
 
 int main(int argc, char* argv){
 	ready_queue r;
-	vector <process> p_list;
+	vector <process*> p_list;
 	srand(time(NULL));
 
 	// process create

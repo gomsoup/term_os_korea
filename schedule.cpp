@@ -16,6 +16,13 @@ void schedule::scheduleStart(ready_queue &r, unsigned int &tick, int algorithm){
 		}
 		nonPreemptivePriorityStart(r, tick);
 	}
+	else if (algorithm == 2) {
+		if (!start_flag) {
+			start_flag = true;
+			cout << "preemptive priority Start!!" << endl;
+		}
+		preemptivePriorityStart(r, tick);
+	}
 }
 
 void schedule::nonPreemptiveSJFStart() {
@@ -32,9 +39,11 @@ void schedule::nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick){
 			return;
 		}
 		else {
-			current_job = r.returnPriorityProcess();
-			if (current_job == nullptr)
+			current_job = &r.returnPriorityProcess();
+			if (current_job == nullptr) {
 				return;
+
+			}
 		}
 	}
 
@@ -64,23 +73,16 @@ void schedule::nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick){
 	current_job->bursted++;
 }
 
-void schedule::orderByPriority(ready_queue r) {
-
-}
-
-void schedule::preemptivePriorityStart() {
-
-}
-
-void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
-	if (current_job == nullptr) {
-		if (r.isEmpty()) {
-			return;
-		}
-		else {
-			current_job = &r.getFirstMember();
-		}
+void schedule::preemptivePriorityStart(ready_queue &r, unsigned int &tick) {
+	if (r.isEmpty())
+		return;
+	current_job = &r.returnPriorityProcess();
+	if (current_job == nullptr)
+		return;
+	else if (last_job != nullptr && current_job != last_job) {
+		progress.back()->done_time = tick;
 	}
+
 
 	if (progress.empty() || progress.back()->pid != current_job->pid) {
 		job *temp = new job();
@@ -89,7 +91,45 @@ void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
 		progress.push_back(temp);
 	}
 	else if (current_job->bursted == current_job->cpu_burst) {
-		r.QueuePop();
+		r.deleteProcess(current_job);
+		current_job->done_time = tick;
+		progress.back()->time = tick;
+		progress.back()->done_time = tick;
+		done_process.push(*current_job);
+
+
+		current_job = nullptr;
+		tick--;
+		return;
+	}
+	else {
+		progress.back()->time = tick;
+	}
+
+	r.addWaitingTime(current_job);
+	current_job->bursted++;
+	last_job = current_job;
+}
+
+void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
+	if (current_job == nullptr) {
+		if (r.isEmpty()) {
+			return;
+		}
+		else {
+			current_job = r.getFirstMember();
+		}
+	}
+
+	if (progress.empty() || progress.back()->pid != current_job->pid) {
+		job *temp = new job();
+		temp->pid = current_job->pid;
+		temp->start_time = tick;
+		temp->done_time = tick;
+		progress.push_back(temp);
+	}
+	else if (current_job->bursted == current_job->cpu_burst) {
+		r.deleteProcess(current_job);
 		current_job->done_time = tick;
 		progress.back()->time = tick;
 		progress.back()->done_time = tick; 
@@ -198,29 +238,35 @@ void schedule::drawGanttChart() {
 // long term scheduler
 
 void longterm_schedule::pushReadyQueue(ready_queue &r, unsigned int tick, int algorithm) {
-
-		while (!FIFO_q.empty()) {
-			process p = FIFO_q.top();
-			if (p.arrive == tick) {
-				FIFO_q.pop();
-				r.QueuePush(p);
-			}
-			else
-				return;
+	queue<process*> temp = q;
+	queue<process*> temp2;
+	while (!temp.empty()) {
+		process *p = temp.front();
+		if (p->arrive == tick) {
+			temp.pop();
+			r.QueuePush(p);
 		}
-	
-	/*
-	else if (algorithm == 1) {
-		while (!priority_q.empty()) {
-			process p = priority_q.top();
-			if (p.arrive == tick) {
-				priority_q.pop();
-				r.QueuePush(p);
-			}
-			else
-				return;
+		else {
+			temp2.push(temp.front());
+			temp.pop();
 		}
 	}
-	*/
 
+	q = temp2;
+}
+
+void longterm_schedule::cleanQueue() {
+	queue<process*> temp;
+	
+	while (!q.empty()) {
+		process *p = q.front();
+		p->bursted = 0;
+		p->waiting_time = 0;
+		p->done_time = 0;
+
+		temp.push(p);
+		q.pop();
+	}
+
+	q = temp;
 }

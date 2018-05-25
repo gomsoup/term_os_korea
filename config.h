@@ -8,12 +8,29 @@ using namespace std;
 
 class ready_queue{
 public:
-	queue <process> q;
-	process last;
+	queue <process*> q;
 
-	void QueuePush(process &p){
+	ready_queue() {
+
+	}
+
+	ready_queue(const ready_queue& r) {
+		queue <process*> temp = r.q;
+
+		while (!temp.empty()) {
+			process *p = new process(*temp.front());
+			q.push(p);
+
+			temp.pop();
+		}
+	}
+
+	ready_queue& operator=(const ready_queue r) {
+		q = r.q;
+	}
+
+	void QueuePush(process *p){
 		q.push(p);
-		last = q.front();
 	}
 
 	void QueuePop(){
@@ -26,7 +43,7 @@ public:
 		}
 	}
 
-	process &getFirstMember() {
+	process *getFirstMember() {
 		return q.front();
 	}
 
@@ -35,7 +52,7 @@ public:
 	}
 
 	void addWaitingTime(process *except);
-	process *returnPriorityProcess();
+	process &returnPriorityProcess();
 	void popPriorityProcess(process p);
 	void deleteProcess(process *p);
 };
