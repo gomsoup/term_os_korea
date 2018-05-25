@@ -29,13 +29,20 @@ void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
 }
 
 
-int main(int argc, char* argv){
+int main(int argc, char* argv[]){
+	if (argc < 2) {
+		cout << "usage : ./term [process amount]" << endl;
+		exit(0);
+	}
+
 	ready_queue r;
 	vector <process*> p_list;
 	srand(time(NULL));
 
+	int p_num = atoi(argv[1]);
+
 	// process create
-	createProcess(p_list, 4);
+	createProcess(p_list, p_num);
 	printProcess(p_list);
 	// scheduler create
 	longterm_schedule ls(p_list);

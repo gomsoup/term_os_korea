@@ -23,7 +23,7 @@ public:
 		pid = pid_count++;
 		cpu_burst = rand()%7 + 1;
 		bursted = 0;
-		arrive = rand()%3;
+		arrive = rand()%5;
 		priority = rand()%5 + 1;
 		waiting_time = 0;
 		done_time = 0;
