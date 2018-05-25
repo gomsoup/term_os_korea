@@ -29,8 +29,8 @@ class schedule {
 	void nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick);
 	void preemptivePriorityStart(ready_queue &r, unsigned int &tick);
 	void FCFSStart(ready_queue &r, unsigned int &tick);
-	void nonPreemptiveSJFStart();
-	void preemptiveSJFStart();
+	void nonPreemptiveSJFStart(ready_queue &r, unsigned int &tick);
+	void preemptiveSJFStart(ready_queue &r, unsigned int &tick);
 
 public:
 	void scheduleStart(ready_queue &r,unsigned int &tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 

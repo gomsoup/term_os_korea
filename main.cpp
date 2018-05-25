@@ -8,7 +8,7 @@
 using namespace std;
 
 void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		longterm_schedule temp = ls;
 		schedule stemp = s;
 		unsigned int tick = 0;

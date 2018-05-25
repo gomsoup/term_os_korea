@@ -49,7 +49,29 @@ process &ready_queue::returnPriorityProcess() {
 	q = temp2;
 	return *p;
 }
+process &ready_queue::returnSJFProcess() {
+	process *p = nullptr;
+	queue <process*> temp = q;
+	queue <process*> temp2;
 
+	if (q.empty()) return *p;
+
+	p = q.front();
+
+
+	while (true) {
+		temp2.push(q.front());
+		q.pop();
+		if (q.empty())
+			break;
+
+		if (p->cpu_burst > q.front()->cpu_burst)
+			p = q.front();
+	}
+
+	q = temp2;
+	return *p;
+}
 process &ready_queue::returnRRProcess() {
 	process *p = nullptr;
 	if (q.empty()) return *p;

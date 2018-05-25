@@ -54,6 +54,7 @@ public:
 	void addWaitingTime(process *except);
 	process &returnPriorityProcess();
 	process &returnRRProcess();
+	process &returnSJFProcess();
 	void quantumZero();
 	void popPriorityProcess(process p);
 	void deleteProcess(process *p);

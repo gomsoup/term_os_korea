@@ -30,13 +30,56 @@ void schedule::scheduleStart(ready_queue &r, unsigned int &tick, int algorithm){
 		}
 		RRStart(r, tick);
 	}
+	else if (algorithm == 4) { // RR
+		if (!start_flag) {
+			start_flag = true;
+			cout << "non preemptive SJF Start!!" << endl;
+		}
+		nonPreemptiveSJFStart(r, tick);
+	}
 }
 
-void schedule::nonPreemptiveSJFStart() {
+void schedule::nonPreemptiveSJFStart(ready_queue &r, unsigned int &tick) {
+	if (current_job == nullptr) {
+		if (r.isEmpty()) {
+			return;
+		}
+		else {
+			current_job = &r.returnSJFProcess();
+			if (current_job == nullptr) {
+				return;
 
+			}
+		}
+	}
+
+	if (progress.empty() || progress.back()->pid != current_job->pid) {
+		job *temp = new job();
+		temp->pid = current_job->pid;
+		temp->start_time = tick;
+		progress.push_back(temp);
+	}
+	else if (current_job->bursted == current_job->cpu_burst) {
+		r.deleteProcess(current_job);
+		current_job->done_time = tick;
+		progress.back()->time = tick;
+		progress.back()->done_time = tick;
+		done_process.push(*current_job);
+
+
+		current_job = nullptr;
+		tick--;
+		return;
+	}
+	else {
+		progress.back()->time = tick;
+	}
+
+	r.addWaitingTime(current_job);
+	current_job->bursted++;
 }
 
-void schedule::preemptiveSJFStart() {
+void schedule::preemptiveSJFStart(ready_queue &r, unsigned int &tick) {
 
 }
 
