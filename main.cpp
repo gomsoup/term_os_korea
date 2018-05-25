@@ -8,7 +8,7 @@
 using namespace std;
 
 void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 6; i++) { // 6 algorithms
 		longterm_schedule temp = ls;
 		schedule stemp = s;
 		unsigned int tick = 0;
@@ -19,7 +19,7 @@ void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
 			tick++;
 		}
 
-		stemp.drawGanttChart();
+		stemp.test();
 		stemp.getAWT();
 		stemp.getATT();
 		cout << endl;
@@ -35,7 +35,7 @@ int main(int argc, char* argv){
 	srand(time(NULL));
 
 	// process create
-	createProcess(p_list, 5);
+	createProcess(p_list, 4);
 	printProcess(p_list);
 	// scheduler create
 	longterm_schedule ls(p_list);

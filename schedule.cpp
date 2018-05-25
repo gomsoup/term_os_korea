@@ -30,10 +30,17 @@ void schedule::scheduleStart(ready_queue &r, unsigned int &tick, int algorithm){
 		}
 		RRStart(r, tick);
 	}
-	else if (algorithm == 4) { // RR
+	else if (algorithm == 4) { // non preemptive SJF
 		if (!start_flag) {
 			start_flag = true;
 			cout << "non preemptive SJF Start!!" << endl;
+		}
+		nonPreemptiveSJFStart(r, tick);
+	}
+	else if (algorithm == 5) { // preemptive SJF
+		if (!start_flag) {
+			start_flag = true;
+			cout << "preemptive SJF Start!!" << endl;
 		}
 		nonPreemptiveSJFStart(r, tick);
 	}
@@ -80,7 +87,41 @@ void schedule::nonPreemptiveSJFStart(ready_queue &r, unsigned int &tick) {
 }
 
 void schedule::preemptiveSJFStart(ready_queue &r, unsigned int &tick) {
+	if (r.isEmpty())
+		return;
+	current_job = &r.returnSJFProcess();
+	if (current_job == nullptr)
+		return;
+	else if (last_job != nullptr && current_job != last_job) {
+		progress.back()->done_time = tick;
+	}
 
+
+	if (progress.empty() || progress.back()->pid != current_job->pid) {
+		job *temp = new job();
+		temp->pid = current_job->pid;
+		temp->start_time = tick;
+		progress.push_back(temp);
+	}
+	else if (current_job->bursted == current_job->cpu_burst) {
+		r.deleteProcess(current_job);
+		current_job->done_time = tick;
+		progress.back()->time = tick;
+		progress.back()->done_time = tick;
+		done_process.push(*current_job);
+
+
+		current_job = nullptr;
+		tick--;
+		return;
+	}
+	else {
+		progress.back()->time = tick;
+	}
+
+	r.addWaitingTime(current_job);
+	current_job->bursted++;
+	last_job = current_job;
 }
 
 void schedule::nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick){
@@ -254,7 +295,8 @@ void schedule::getAWT() {
 		cnt++;
 	}
 
-	cout << "AWT : " << (double)wt / cnt << endl;
+	cout << "Total Waiting Time : " << wt << endl;
+	cout << "Average Waiting Time : " << (double)wt / cnt << endl;
 }
 
 void schedule::getATT() {
@@ -270,59 +312,70 @@ void schedule::getATT() {
 		cnt++;
 	}
 
-	cout << "ATT : " << (double)tt / cnt << endl;
+	cout << "Total Turnarund Time : " << tt << endl;
+	cout << "Average Turnaround Time : "  << (double)tt / cnt << endl;
 }
 
+void schedule::drawGanttChart()
+{
+	int i, j, n = 10;
+	list <job*> temp = progress;
+	job *p;
 
-void schedule::drawGanttChart() {
-	list <job *> temp = progress;
-	int cnt = 0;
-	string a, b;
-
-	a += "| ";
-	b += "0";
-
-	int last_time = 0; // for 0
-
-
-	while (!temp.empty()) { // draw graph start
-		job *p = temp.front();
-
-		while (cnt < p->start_time) {
-			a += " ";
-			b += " ";
-			cnt++;
-		}
-
-		if (last_time != p->start_time) {
-			a += "| ";
-			b += to_string(p->start_time);
-		}
-		for (int i = p->start_time; i < p->done_time; i++) {
-			if (i == (p->done_time+p->start_time) / 2) {
-				a += to_string(p->pid) + " ";
-				b += " ";
-			}
-			else {
-				a += " ";
-				b += " ";
-			}
-		}
-
-
-		a += "| ";
-		if (p->done_time > 9)
-			a += " ";
-
-		b += to_string(p->done_time);
-		if (p->done_time < 9)
-			b += " ";
-		last_time = p->done_time;
-
+	while (!temp.empty()) { // top bar
+		p = temp.front();
 		temp.pop_front();
+
+		for (int i = p->start_time; i < p->done_time; i++) cout << ("--");
+		cout << " ";
 	}
-	cout << a << endl;
-	cout << b << endl;
+	cout << endl << "|";
+
+	temp = progress;
+	while (!temp.empty()) {
+		p = temp.front();
+		temp.pop_front();
+
+		for (int i = p->start_time; i < p->done_time - 1; i++) cout << " ";
+		cout << "P" << p->pid;
+		for (int i = p->start_time; i < p->done_time - 1; i++) cout << " ";
+		cout << "|";
+	}
+	cout << endl;
+
+	temp = progress;
+	while (!temp.empty()) {
+		p = temp.front();
+		temp.pop_front();
+
+		for (int i = p->start_time; i < p->done_time; i++) cout << "--";
+		cout << " ";
+	}
+	cout << endl;
+
+
+	temp = progress;
+	cout << "0";
+	int last= 0;
+	while (!temp.empty()) {
+		p = temp.front();
+		temp.pop_front();
+		
+		if (last != p->start_time) {
+			for (int i = last; i < p->start_time; i++)cout << " ";
+			cout << p->start_time;
+			for (int i = p->start_time; i < p->done_time; i++) cout << "  ";
+			if (p->done_time > 9) cout << "\b";
+			cout << p->done_time;
+		}
+		else {
+			for (int i = p->start_time; i < p->done_time; i++) cout << "  ";
+			cout << p->done_time;
+		}
+		last = p->done_time;
+	}
+	cout << endl;
+
 }
 
 // long term scheduler
