@@ -6,7 +6,7 @@ using namespace std;
 #ifndef process_def
 #define process_def
 
-static int pid_count = -1; // constructor 
+static int pid_count = 1; // constructor 
 
 class process{
 public:
@@ -42,8 +42,22 @@ public:
 
 	}
 
-	bool operator> (const process& l) const {
+	process& operator= (const process &p) {
+		pid = p.pid;
+		cpu_burst = p.cpu_burst;
+		arrive = p.arrive;
+		priority = p.priority;
+		waiting_time = p.waiting_time;
+		done_time = p.done_time;
+		bursted = p.bursted;
+	}
+
+	bool operator> (const process& l) const { // for FIFO
 		return arrive > l.arrive;
+	}
+
+	bool operator< (const process& l) const {
+		return priority > l.priority;
 	}
 
 };

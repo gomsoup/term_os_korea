@@ -35,7 +35,9 @@ public:
 	}
 
 	void addWaitingTime(process *except);
-
+	process *returnPriorityProcess();
+	void popPriorityProcess(process p);
+	void deleteProcess(process *p);
 };
 
 void pushProcessReadyQueue(ready_queue &r, vector <process> p_list);

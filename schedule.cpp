@@ -9,6 +9,13 @@ void schedule::scheduleStart(ready_queue &r, unsigned int &tick, int algorithm){
 		}
 		FCFSStart(r, tick);
 	}
+	else if (algorithm == 1) {
+		if (!start_flag) {
+			start_flag = true;
+			cout << "non preemptive priority Start!!" << endl;
+		}
+		nonPreemptivePriorityStart(r, tick);
+	}
 }
 
 void schedule::nonPreemptiveSJFStart() {
@@ -19,7 +26,45 @@ void schedule::preemptiveSJFStart() {
 
 }
 
-void schedule::nonPreemptivePriorityStart() {
+void schedule::nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick){
+	if (current_job == nullptr) {
+		if (r.isEmpty()) {
+			return;
+		}
+		else {
+			current_job = r.returnPriorityProcess();
+			if (current_job == nullptr)
+				return;
+		}
+	}
+
+	if (progress.empty() || progress.back()->pid != current_job->pid) {
+		job *temp = new job();
+		temp->pid = current_job->pid;
+		temp->start_time = tick;
+		progress.push_back(temp);
+	}
+	else if (current_job->bursted == current_job->cpu_burst) {
+		r.deleteProcess(current_job);
+		current_job->done_time = tick;
+		progress.back()->time = tick;
+		progress.back()->done_time = tick;
+		done_process.push(*current_job);
+
+
+		current_job = nullptr;
+		tick--;
+		return;
+	}
+	else {
+		progress.back()->time = tick;
+	}
+
+	r.addWaitingTime(current_job);
+	current_job->bursted++;
+}
+
+void schedule::orderByPriority(ready_queue r) {
 
 }
 
@@ -37,7 +82,6 @@ void schedule::FCFSStart(ready_queue &r, unsigned int &tick) {
 		}
 	}
 
-	
 	if (progress.empty() || progress.back()->pid != current_job->pid) {
 		job *temp = new job();
 		temp->pid = current_job->pid;
@@ -124,8 +168,8 @@ void schedule::drawGanttChart() {
 			a += "| ";
 			b += to_string(p->start_time);
 		}
-		for (int i = 0; i < p->done_time; i++) {
-			if (i == p->done_time / 2) {
+		for (int i = p->start_time; i < p->done_time; i++) {
+			if (i == (p->done_time+p->start_time) / 2) {
 				a += to_string(p->pid) + " ";
 				b += " ";
 			}
@@ -153,15 +197,30 @@ void schedule::drawGanttChart() {
 
 // long term scheduler
 
-void longterm_schedule::pushReadyQueue(ready_queue &r, unsigned int tick) {
-	while (!q.empty()) {
-		process p = q.top();
-		if (p.arrive == tick) {
-			q.pop();
-			r.QueuePush(p);
+void longterm_schedule::pushReadyQueue(ready_queue &r, unsigned int tick, int algorithm) {
+
+		while (!FIFO_q.empty()) {
+			process p = FIFO_q.top();
+			if (p.arrive == tick) {
+				FIFO_q.pop();
+				r.QueuePush(p);
+			}
+			else
+				return;
 		}
-		else
-			return;
+	
+	/*
+	else if (algorithm == 1) {
+		while (!priority_q.empty()) {
+			process p = priority_q.top();
+			if (p.arrive == tick) {
+				priority_q.pop();
+				r.QueuePush(p);
+			}
+			else
+				return;
+		}
 	}
+	*/
 
 }

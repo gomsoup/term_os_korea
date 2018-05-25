@@ -24,11 +24,12 @@ class schedule {
 	bool start_flag = false;
 
 	void RRStart();
-	void nonPreemptivePriorityStart();
+	void nonPreemptivePriorityStart(ready_queue &r, unsigned int &tick);
 	void preemptivePriorityStart();
 	void FCFSStart(ready_queue &r, unsigned int &tick);
 	void nonPreemptiveSJFStart();
 	void preemptiveSJFStart();
+	void orderByPriority(ready_queue r);
 
 public:
 	void scheduleStart(ready_queue &r,unsigned int &tick, int algorithm); // call-by-value. we don't need reference every scheduling algorithm. 
@@ -42,7 +43,8 @@ public:
 
 class longterm_schedule {
 	process *p;
-	priority_queue<process, vector<process>, greater<process>> q;
+	priority_queue<process, vector<process>, greater<process>> FIFO_q;
+	priority_queue<process, vector<process>, less<process>> priority_q;
 
 public:
 
@@ -50,17 +52,19 @@ public:
 		vector <process>::iterator iter;
 
 		for (iter = p_list.begin(); iter != p_list.end(); iter++) {
-			q.push(*iter);
+			FIFO_q.push(*iter);
+			priority_q.push(*iter);
 		}
 
 	}
 
-	bool isDone() {
-		return q.empty();
+	bool isDone(int algorithm) {
+		if (algorithm <= 1) {
+			return FIFO_q.empty();
+		}
 	}
 
-
-	void pushReadyQueue(ready_queue &r, unsigned int tick);
+	void pushReadyQueue(ready_queue &r, unsigned int tick, int algorithm);
 };
 
 

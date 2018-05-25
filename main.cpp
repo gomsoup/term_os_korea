@@ -8,13 +8,13 @@
 using namespace std;
 
 void scheduleStart(longterm_schedule ls, schedule s, ready_queue r) {
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		longterm_schedule temp = ls;
 		schedule stemp = s;
 		unsigned int tick = 0;
 
-		while ( !(temp.isDone() && stemp.isDone(r)) ) {
-			temp.pushReadyQueue(r, tick);
+		while ( !(temp.isDone(i) && stemp.isDone(r)) ) {
+			temp.pushReadyQueue(r, tick, i);
 			stemp.scheduleStart(r, tick, i);
 			tick++;
 		}
